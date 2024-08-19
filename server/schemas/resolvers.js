@@ -1,30 +1,22 @@
-const { User, Task } = require('../models');
-const { signToken } = require('../utils/auth');
+const { Book } = require('../models'); 
 
 const resolvers = {
   Query: {
-    users: async () => User.find(),
-    tasks: async () => Task.find(),
+    books: async () => {
+      return Book.find();
+    },
+    book: async (parent, { _id }) => {
+      return Book.findById(_id);
+    },
   },
   Mutation: {
-    addUser: async (parent, args) => {
-      const user = await User.create(args);
-      const token = signToken(user);
-      return { token, user };
+    addBook: async (parent, args) => {
+      return Book.create(args);
     },
-    addTask: async (parent, args) => {
-      const task = await Task.create(args);
-      return task;
-    },
-    login: async (parent, { username, password }) => {
-      const user = await User.findOne({ username });
-      if (!user || !(await user.isCorrectPassword(password))) {
-        throw new Error('Incorrect credentials');
-      }
-      const token = signToken(user);
-      return { token, user };
+    removeBook: async (parent, { _id }) => {
+      return Book.findByIdAndDelete(_id);
     },
   },
 };
 
-module.exports = resolvers;
+module.exports = { resolvers };

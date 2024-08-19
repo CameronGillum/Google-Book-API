@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: 'search',
+        index: true,
         element: <SearchBooks />,
       },
       {

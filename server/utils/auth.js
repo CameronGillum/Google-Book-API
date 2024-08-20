@@ -5,6 +5,10 @@ const expiration = '2h';
 
 module.exports = {
   authMiddleware: function ({ req }) {
+    if (!req) {
+      throw new Error('Request object is required');
+    }
+
     let token = req.body.token || req.query.token || req.headers.authorization;
 
     if (req.headers.authorization) {
@@ -16,10 +20,10 @@ module.exports = {
     }
 
     try {
-      const { data } = jwt.verify(token, secret, { expiresIn: expiration });
+      const { data } = jwt.verify(token, secret);
       req.user = data;
-    } catch {
-      console.log('Invalid token');
+    } catch (err) {
+      console.log('Invalid token', err);
     }
 
     return req;

@@ -23,14 +23,14 @@ async function startServer() {
     await server.start();
     server.applyMiddleware({ app });
 
-    db.once("open", () => {
+    // db.once("open", () => {
       app.listen(PORT, () => {
         console.log(`API server running on port ${PORT}!`);
         console.log(
           `Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`
         );
       });
-    });
+    // });
   } catch (error) {
     console.error("Error starting server:", error);
   }
